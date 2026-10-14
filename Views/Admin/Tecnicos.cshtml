@@ -1,0 +1,112 @@
+﻿@model List<SistemaReparaciones.Models.TecnicoViewModel>
+
+@{
+    ViewData["Title"] = "Gestión de Técnicos";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h1>Gestión de Técnicos</h1>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    No existen técnicos registrados.
+                </div>
+            }
+            else
+            {
+                <table class="table table-striped">
+
+                    <thead>
+                        <tr>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Email</th>
+                            <th>Especialidad</th>
+                            <th>Disponibilidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var tecnico in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @tecnico.Nombres
+                                </td>
+
+                                <td>
+                                    @tecnico.Apellidos
+                                </td>
+
+                                <td>
+                                    @tecnico.Email
+                                </td>
+
+                                <td>
+                                    @(tecnico.EspecialidadNombre ?? "Sin especialidad")
+                                </td>
+
+                                <td>
+                                    @if (tecnico.Disponible)
+                                    {
+                                        <span class="badge bg-success">
+                                            Disponible
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            No disponible
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <a asp-controller="Admin"
+                                       asp-action="EditarTecnico"
+                                       asp-route-id="@tecnico.Id"
+                                       class="btn btn-sm btn-warning">
+                                        Editar
+                                    </a>
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,93 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<!-- Carga de Bootstrap Icons si no los tienes en tu _Layout -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container my-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12 col-md-8 col-lg-5">
+            <div class="card border-0 shadow-lg rounded-3 p-4 p-sm-5 bg-white">
+
+                <div class="text-center mb-4">
+                    <h1 class="fw-bold text-dark mb-1 fs-2">Crear una cuenta</h1>
+                    <p class="text-muted fs-6">Ingresa tus datos para registrarte</p>
+                </div>
+
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 fs-6" role="alert"></div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Nombres" class="form-control rounded-3" placeholder="Nombres" />
+                        <label asp-for="Input.Nombres" class="text-secondary fw-semibold">Nombres</label>
+                        <span asp-validation-for="Input.Nombres" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Apellidos" class="form-control rounded-3" placeholder="Apellidos" />
+                        <label asp-for="Input.Apellidos" class="text-secondary fw-semibold">Apellidos</label>
+                        <span asp-validation-for="Input.Apellidos" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
+                        <label asp-for="Input.Email" class="text-secondary fw-semibold">Correo Electrónico</label>
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Campo Contraseña con Visor -->
+                    <div class="position-relative mb-3">
+                        <div class="form-floating">
+                            <input asp-for="Input.Password" id="passwordInput" type="password" class="form-control rounded-3 pe-5" autocomplete="new-password" aria-required="true" placeholder="Contraseña" />
+                            <label asp-for="Input.Password" class="text-secondary fw-semibold">Contraseña</label>
+                        </div>
+                        <button type="button" class="btn border-0 position-absolute top-50 end-0 translate-middle-y me-2 text-secondary z-3" onclick="togglePasswordVisibility('passwordInput', 'toggleIcon1')">
+                            <i id="toggleIcon1" class="bi bi-eye"></i>
+                        </button>
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Campo Confirmar Contraseña con Visor -->
+                    <div class="position-relative mb-4">
+                        <div class="form-floating">
+                            <input asp-for="Input.ConfirmPassword" id="confirmPasswordInput" type="password" class="form-control rounded-3 pe-5" autocomplete="new-password" aria-required="true" placeholder="Confirmar contraseña" />
+                            <label asp-for="Input.ConfirmPassword" class="text-secondary fw-semibold">Confirmar Contraseña</label>
+                        </div>
+                        <button type="button" class="btn border-0 position-absolute top-50 end-0 translate-middle-y me-2 text-secondary z-3" onclick="togglePasswordVisibility('confirmPasswordInput', 'toggleIcon2')">
+                            <i id="toggleIcon2" class="bi bi-eye"></i>
+                        </button>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                    </div>
+
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-primary btn-lg rounded-3 fw-bold shadow-sm py-3">
+                        Registrarse
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            }
+        }
+    </script>
+}

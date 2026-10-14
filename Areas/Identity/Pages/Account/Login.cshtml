@@ -1,0 +1,68 @@
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="row justify-content-center align-items-center mt-5">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4 p-sm-5">
+
+                <div class="text-center mb-4">
+                    <h1 class="fw-bold fs-2 text-dark">@ViewData["Title"]</h1>
+                    <p class="text-muted fs-6 mb-0">Ingresa tus credenciales para acceder a tu cuenta local</p>
+                </div>
+
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
+                        <label asp-for="Input.Email" class="form-label text-secondary">Correo electrónico</label>
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control rounded-3" autocomplete="current-password" aria-required="true" placeholder="contraseña" />
+                        <label asp-for="Input.Password" class="form-label text-secondary">Contraseña</label>
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" asp-for="Input.RememberMe" id="rememberMeCheck" />
+                        <label class="form-check-label text-secondary fw-normal" for="rememberMeCheck">
+                            Recordarme en este dispositivo
+                        </label>
+                    </div>
+
+                    <div class="mb-4">
+                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary fw-semibold rounded-3 shadow-sm py-2 fs-5">
+                            Iniciar sesión
+                        </button>
+                    </div>
+
+                    <hr class="my-4 text-muted opacity-25" />
+
+                    <div class="text-center d-flex flex-column gap-2 small">
+                        <a id="forgot-password" asp-page="./ForgotPassword" class="text-decoration-none fw-medium link-primary">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none fw-medium link-secondary">
+                            ¿No tienes cuenta? <span class="fw-semibold text-primary">Regístrate como nuevo usuario</span>
+                        </a>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-decoration-none text-muted">
+                            Reenviar correo de confirmación
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

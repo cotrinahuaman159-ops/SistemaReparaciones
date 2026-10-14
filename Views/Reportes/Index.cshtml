@@ -1,0 +1,484 @@
+﻿@model List<SistemaReparaciones.Models.ReporteSolicitudViewModel>
+
+@{
+    ViewData["Title"] = "Reportes";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+
+    int paginaActual = ViewBag.PaginaActual ?? 1;
+    int totalPaginas = ViewBag.TotalPaginas ?? 0;
+
+    string? estadoActual = ViewBag.Estado as string;
+    DateTime? fechaDesde = ViewBag.FechaDesde as DateTime?;
+    DateTime? fechaHasta = ViewBag.FechaHasta as DateTime?;
+
+    int total = ViewBag.Total ?? 0;
+    int pendientes = ViewBag.Pendientes ?? 0;
+    int asignadas = ViewBag.Asignadas ?? 0;
+    int enReparacion = ViewBag.EnReparacion ?? 0;
+    int finalizadas = ViewBag.Finalizadas ?? 0;
+}
+
+<div class="container">
+
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Reportes</h1>
+
+            <p class="text-muted mb-0">
+                Reporte de solicitudes de servicio.
+            </p>
+        </div>
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- INDICADORES -->
+    <!-- ========================================================= -->
+
+    <div class="row mb-4">
+
+        <!-- Total -->
+        <div class="col-md-6 col-lg mb-3">
+            <div class="card shadow-sm h-100 border-primary">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Total
+                    </h6>
+
+                    <h2 class="mb-0 text-primary">
+                        @total
+                    </h2>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Pendientes -->
+        <div class="col-md-6 col-lg mb-3">
+            <div class="card shadow-sm h-100 border-warning">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Pendientes
+                    </h6>
+
+                    <h2 class="mb-0 text-warning">
+                        @pendientes
+                    </h2>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Asignadas -->
+        <div class="col-md-6 col-lg mb-3">
+            <div class="card shadow-sm h-100 border-primary">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Asignadas
+                    </h6>
+
+                    <h2 class="mb-0 text-primary">
+                        @asignadas
+                    </h2>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- En reparación -->
+        <div class="col-md-6 col-lg mb-3">
+            <div class="card shadow-sm h-100 border-info">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        En reparación
+                    </h6>
+
+                    <h2 class="mb-0 text-info">
+                        @enReparacion
+                    </h2>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Finalizadas -->
+        <div class="col-md-6 col-lg mb-3">
+            <div class="card shadow-sm h-100 border-success">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Finalizadas
+                    </h6>
+
+                    <h2 class="mb-0 text-success">
+                        @finalizadas
+                    </h2>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- FILTROS -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+                Filtros del reporte
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Index"
+                  method="get">
+
+                <div class="row">
+
+                    <!-- Estado -->
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Estado
+                        </label>
+
+                        <select name="estado"
+                                class="form-select">
+
+                            <option value=""
+                                    selected="@(string.IsNullOrEmpty(estadoActual))">
+                                Todos
+                            </option>
+
+                            <option value="Pendiente"
+                                    selected="@(estadoActual == "Pendiente")">
+                                Pendiente
+                            </option>
+
+                            <option value="Asignada"
+                                    selected="@(estadoActual == "Asignada")">
+                                Asignada
+                            </option>
+
+                            <option value="En reparación"
+                                    selected="@(estadoActual == "En reparación")">
+                                En reparación
+                            </option>
+
+                            <option value="Finalizada"
+                                    selected="@(estadoActual == "Finalizada")">
+                                Finalizada
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Fecha desde -->
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Fecha desde
+                        </label>
+
+                        <input type="date"
+                               name="fechaDesde"
+                               class="form-control"
+                               value="@(fechaDesde?.ToString("yyyy-MM-dd") ?? "")" />
+
+                    </div>
+
+
+                    <!-- Fecha hasta -->
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Fecha hasta
+                        </label>
+
+                        <input type="date"
+                               name="fechaHasta"
+                               class="form-control"
+                               value="@(fechaHasta?.ToString("yyyy-MM-dd") ?? "")" />
+
+                    </div>
+
+
+                    <!-- Botones -->
+                    <div class="col-md-2 mb-3 d-flex align-items-end gap-2">
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            Filtrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- RESULTADOS -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Resultados
+            </h5>
+
+            @if (total > 0)
+            {
+                <span class="text-muted">
+                    Página @paginaActual de @totalPaginas
+                </span>
+            }
+
+        </div>
+
+        <div class="card-body">
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info mb-0">
+
+                    No existen solicitudes que coincidan
+                    con los filtros seleccionados.
+
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover align-middle">
+
+                        <thead class="table-primary">
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Cliente</th>
+
+                                <th>Electrodoméstico</th>
+
+                                <th>Técnico</th>
+
+                                <th>Estado</th>
+
+                                <th>Fecha solicitada</th>
+
+                                <th>Fecha registro</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var reporte in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            #@reporte.Id
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        @reporte.Cliente
+                                    </td>
+
+                                    <td>
+                                        @reporte.Electrodomestico
+                                    </td>
+
+                                    <td>
+                                        @reporte.Tecnico
+                                    </td>
+
+                                    <td>
+
+                                        @if (reporte.Estado == "Pendiente")
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Pendiente
+                                            </span>
+                                        }
+                                        else if (reporte.Estado == "Asignada")
+                                        {
+                                            <span class="badge bg-primary">
+                                                Asignada
+                                            </span>
+                                        }
+                                        else if (reporte.Estado == "En reparación")
+                                        {
+                                            <span class="badge bg-info text-dark">
+                                                En reparación
+                                            </span>
+                                        }
+                                        else if (reporte.Estado == "Finalizada")
+                                        {
+                                            <span class="badge bg-success">
+                                                Finalizada
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @reporte.Estado
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @reporte.FechaSolicitada.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <td>
+                                        @reporte.FechaRegistro.ToString("dd/MM/yyyy HH:mm")
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- PAGINACIÓN -->
+                <!-- ================================================= -->
+                @if (totalPaginas > 1)
+                {
+                    <nav class="mt-4"
+                         aria-label="Paginación de reportes">
+
+                        <ul class="pagination justify-content-center">
+
+                            <!-- Anterior -->
+                            <li class="page-item @(paginaActual <= 1 ? "disabled" : "")">
+
+                                @if (paginaActual > 1)
+                                {
+                                    <a class="page-link"
+                                       asp-action="Index"
+                                       asp-route-pagina="@(paginaActual - 1)"
+                                       asp-route-estado="@estadoActual"
+                                       asp-route-fechaDesde="@(fechaDesde?.ToString("yyyy-MM-dd"))"
+                                       asp-route-fechaHasta="@(fechaHasta?.ToString("yyyy-MM-dd"))">
+                                        Anterior
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="page-link">
+                                        Anterior
+                                    </span>
+                                }
+
+                            </li>
+
+
+                            <!-- Números de página -->
+                            @for (int i = 1; i <= totalPaginas; i++)
+                            {
+                                <li class="page-item @(i == paginaActual ? "active" : "")">
+
+                                    <a class="page-link"
+                                       asp-action="Index"
+                                       asp-route-pagina="@i"
+                                       asp-route-estado="@estadoActual"
+                                       asp-route-fechaDesde="@(fechaDesde?.ToString("yyyy-MM-dd"))"
+                                       asp-route-fechaHasta="@(fechaHasta?.ToString("yyyy-MM-dd"))">
+                                        @i
+                                    </a>
+
+                                </li>
+                            }
+
+
+                            <!-- Siguiente -->
+                            <li class="page-item @(paginaActual >= totalPaginas ? "disabled" : "")">
+
+                                @if (paginaActual < totalPaginas)
+                                {
+                                    <a class="page-link"
+                                       asp-action="Index"
+                                       asp-route-pagina="@(paginaActual + 1)"
+                                       asp-route-estado="@estadoActual"
+                                       asp-route-fechaDesde="@(fechaDesde?.ToString("yyyy-MM-dd"))"
+                                       asp-route-fechaHasta="@(fechaHasta?.ToString("yyyy-MM-dd"))">
+                                        Siguiente
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="page-link">
+                                        Siguiente
+                                    </span>
+                                }
+
+                            </li>
+
+                        </ul>
+
+                    </nav>
+                }
+
+            }
+
+        </div>
+
+    </div>
+
+</div>

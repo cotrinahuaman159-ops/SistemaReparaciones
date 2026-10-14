@@ -1,0 +1,158 @@
+﻿@model SistemaReparaciones.Models.Calificacion
+
+@{
+    ViewData["Title"] = "Calificar servicio";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Calificar servicio</h1>
+
+            <p class="text-muted">
+                Solicitud #@Model.SolicitudServicioId
+            </p>
+        </div>
+
+        <a asp-action="Detalle"
+           asp-route-id="@Model.SolicitudServicioId"
+           class="btn btn-secondary">
+            Volver al detalle
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+                Calificación del servicio
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-muted">
+                Por favor, califique el servicio recibido.
+                Su opinión nos ayudará a mejorar la atención.
+            </p>
+
+
+            <form asp-action="Calificar"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="SolicitudServicioId" />
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <!-- Puntuación -->
+
+                <div class="mb-4">
+
+                    <label asp-for="Puntuacion"
+                           class="form-label fw-bold">
+                        Puntuación
+                    </label>
+
+                    <select asp-for="Puntuacion"
+                            class="form-select">
+
+                        <option value="0">
+                            Seleccione una puntuación
+                        </option>
+
+                        <option value="5">
+                            ★★★★★ - Excelente
+                        </option>
+
+                        <option value="4">
+                            ★★★★☆ - Muy bueno
+                        </option>
+
+                        <option value="3">
+                            ★★★☆☆ - Bueno
+                        </option>
+
+                        <option value="2">
+                            ★★☆☆☆ - Regular
+                        </option>
+
+                        <option value="1">
+                            ★☆☆☆☆ - Malo
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="Puntuacion"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Comentario -->
+
+                <div class="mb-4">
+
+                    <label asp-for="Comentario"
+                           class="form-label fw-bold">
+                        Comentario
+                    </label>
+
+                    <textarea asp-for="Comentario"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Cuéntenos cómo fue su experiencia con el servicio.">
+                    </textarea>
+
+                    <span asp-validation-for="Comentario"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        Registrar calificación
+
+                    </button>
+
+                    <a asp-action="Detalle"
+                       asp-route-id="@Model.SolicitudServicioId"
+                       class="btn btn-secondary">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

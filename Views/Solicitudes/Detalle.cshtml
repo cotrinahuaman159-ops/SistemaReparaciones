@@ -1,0 +1,245 @@
+﻿@model SistemaReparaciones.Models.SolicitudAdminViewModel
+
+@{
+    ViewData["Title"] = "Detalle de solicitud";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Detalle de solicitud</h1>
+            <p class="text-muted">
+                Solicitud #@Model.Id
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="row">
+
+        <!-- Información del cliente -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        Información del cliente
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Nombre:</strong><br />
+                        @Model.NombreCliente
+                    </p>
+
+                    <p>
+                        <strong>Teléfono:</strong><br />
+                        @Model.Telefono
+                    </p>
+
+                    <p>
+                        <strong>Dirección:</strong><br />
+                        @Model.Direccion
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Información del servicio -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        Información del servicio
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Electrodoméstico:</strong><br />
+                        @Model.Electrodomestico
+                    </p>
+
+                    <p>
+                        <strong>Descripción de la falla:</strong><br />
+                        @Model.DescripcionFalla
+                    </p>
+
+                    <p>
+                        <strong>Fecha solicitada:</strong><br />
+                        @Model.FechaSolicitada.ToString("dd/MM/yyyy")
+                    </p>
+
+                    <p>
+                        <strong>Fecha de registro:</strong><br />
+                        @Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Estado -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">
+                        Estado de la solicitud
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <h4>
+                        @Model.Estado
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Técnico -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        Técnico asignado
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    @if (string.IsNullOrEmpty(Model.TecnicoId))
+                    {
+                        <p class="text-muted">
+                            No hay ningún técnico asignado.
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <strong>Técnico asignado:</strong><br />
+                            @Model.NombreTecnico
+                        </p>
+                    }
+
+                    <hr />
+
+                    @if (Model.Estado == "En reparación")
+                    {
+                        <div class="alert alert-warning">
+
+                            <strong>Atención en curso</strong>
+
+                            <br />
+
+                            Esta solicitud se encuentra actualmente en atención.
+                            No es posible reasignar el técnico.
+
+                        </div>
+                    }
+                    else if (Model.Estado == "Finalizada")
+                    {
+                        <div class="alert alert-success">
+
+                            <strong>Servicio finalizado</strong>
+
+                            <br />
+
+                            Esta solicitud ya fue finalizada y no puede ser reasignada.
+
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-action="AsignarTecnico" method="post">
+
+                            <input type="hidden"
+                                   name="SolicitudId"
+                                   value="@Model.Id" />
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Seleccionar técnico
+                                </label>
+
+                                <select name="TecnicoId"
+                                        class="form-select">
+
+                                    <option value="">
+                                        -- Seleccione un técnico --
+                                    </option>
+
+                                    @foreach (var tecnico in ViewBag.Tecnicos)
+                                    {
+                                        <option value="@tecnico.Id">
+                                            @tecnico.Nombres @tecnico.Apellidos -
+                                            @(tecnico.Especialidad?.Nombre ?? "Sin especialidad")
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-success">
+
+                                Asignar técnico
+
+                            </button>
+
+                        </form>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

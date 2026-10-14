@@ -1,0 +1,191 @@
+﻿@model SistemaReparaciones.Models.Diagnostico
+
+@{
+    ViewData["Title"] = "Registrar diagnóstico";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+
+    var solicitud = ViewBag.Solicitud
+        as SistemaReparaciones.Models.SolicitudServicio;
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Registrar diagnóstico</h1>
+
+            <p class="text-muted">
+                Solicitud #@Model.SolicitudServicioId
+            </p>
+        </div>
+
+        <a asp-action="Detalle"
+           asp-route-id="@Model.SolicitudServicioId"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+
+
+    <!-- Información del servicio -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+                Información del servicio
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <p>
+                        <strong>Cliente:</strong><br />
+
+                        @solicitud?.Cliente?.Nombres
+                        @solicitud?.Cliente?.Apellidos
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <p>
+                        <strong>Electrodoméstico:</strong><br />
+
+                        @(solicitud?.Electrodomestico?.Nombre ?? "Sin especificar")
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <p>
+                        <strong>Falla reportada:</strong><br />
+
+                        @solicitud?.DescripcionFalla
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <p>
+                        <strong>Fecha solicitada:</strong><br />
+
+                        @solicitud?.FechaSolicitada.ToString("dd/MM/yyyy")
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Formulario de diagnóstico -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-warning">
+
+            <h5 class="mb-0">
+                Diagnóstico técnico
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="RegistrarDiagnostico"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="SolicitudServicioId" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="Descripcion"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Descripcion"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Describa el problema encontrado en el equipo">
+                    </textarea>
+
+                    <span asp-validation-for="Descripcion"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="Observaciones"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Observaciones"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Ingrese observaciones adicionales">
+                    </textarea>
+
+                    <span asp-validation-for="Observaciones"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Registrar diagnóstico
+
+                    </button>
+
+                    <a asp-action="Detalle"
+                       asp-route-id="@Model.SolicitudServicioId"
+                       class="btn btn-secondary">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

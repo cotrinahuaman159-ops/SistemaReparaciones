@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Panel de Administración";
+}
+
+@{
+    ViewData["Title"] = "Panel de administración";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+<div class="container mt-4">
+
+    <h1>Panel de Administración</h1>
+
+    <p class="text-muted">
+        Gestión del sistema de reparación de electrodomésticos.
+    </p>
+
+    <div class="row mt-4">
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Usuarios</h5>
+                    <p>Gestionar clientes y técnicos.</p>
+                    <br />
+                    <a asp-controller="Admin"
+                       asp-action="Usuarios"
+                       class="btn btn-primary">
+                        Gestionar usuarios
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Técnicos</h5>
+
+                    <p>Administrar técnicos del sistema.</p>
+                    <br />
+                    <a asp-controller="Admin"
+                       asp-action="Tecnicos"
+                       class="btn btn-primary">
+                        Gestionar técnicos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>Solicitudes</h5>
+
+                    <p>
+                        Administrar las solicitudes de servicio
+                        de los clientes.
+                    </p>
+
+                    <a asp-controller="Solicitudes"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Gestionar solicitudes
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>Reportes</h5>
+
+                    <p>
+                        Consultar indicadores y reportes
+                        de las solicitudes de servicio.
+                    </p>
+
+                    <a asp-controller="Reportes"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Ver reportes
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

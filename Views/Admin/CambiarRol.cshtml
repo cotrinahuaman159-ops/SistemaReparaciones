@@ -1,0 +1,71 @@
+﻿@model SistemaReparaciones.Models.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Cambiar rol";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h1>Cambiar rol</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h5>@Model.Nombres @Model.Apellidos</h5>
+
+            <p>
+                <strong>Correo:</strong> @Model.Email
+            </p>
+
+            <p>
+                <strong>Rol actual:</strong>
+                <span class="badge bg-primary">
+                    @Model.Rol
+                </span>
+            </p>
+
+            <form asp-action="CambiarRol" method="post">
+
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Nuevo rol
+                    </label>
+
+                    <select name="nuevoRol" class="form-select">
+
+                        <option value="Cliente">
+                            Cliente
+                        </option>
+
+                        <option value="Tecnico">
+                            Técnico
+                        </option>
+
+                        <option value="Administrador">
+                            Administrador
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Guardar cambio
+                </button>
+
+                <a asp-action="Usuarios"
+                   class="btn btn-secondary">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

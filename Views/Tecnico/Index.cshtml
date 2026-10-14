@@ -1,0 +1,182 @@
+﻿@model List<SistemaReparaciones.Models.SolicitudAdminViewModel>
+
+@{
+    ViewData["Title"] = "Mis servicios";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Mis servicios</h1>
+
+            <p class="text-muted">
+                Solicitudes de servicio asignadas a usted.
+            </p>
+        </div>
+
+    </div>
+
+    <p class="text-muted">   Solicitudes de servicio asignadas a usted.</p>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+
+            <h5 class="alert-heading">
+                No tiene servicios asignados
+            </h5>
+
+            <p class="mb-0">
+                Actualmente no existen solicitudes de servicio
+                asignadas a usted.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            
+            <div class="card-body">
+
+                <div class="table-responsive">
+                  
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-primary">
+
+                            <tr>
+
+                                <th>
+                                    Solicitud
+                                </th>
+
+                                <th>
+                                    Cliente
+                                </th>
+
+                                <th>
+                                    Electrodoméstico
+                                </th>
+
+                                <th>
+                                    Falla
+                                </th>
+
+                                <th>
+                                    Fecha
+                                </th>
+
+                                <th>
+                                    Estado
+                                </th>
+
+                                <th>
+                                    Acción
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var solicitud in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            #@solicitud.Id
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            @solicitud.NombreCliente
+                                        </strong>
+
+                                        <br />
+
+                                        <small class="text-muted">
+                                            @solicitud.Telefono
+                                        </small>
+                                    </td>
+
+                                    <td>
+                                        @solicitud.Electrodomestico
+                                    </td>
+
+                                    <td>
+                                        @solicitud.DescripcionFalla
+                                    </td>
+
+                                    <td>
+                                        @solicitud.FechaSolicitada.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <td>
+
+                                        @if (solicitud.Estado == "Asignada")
+                                        {
+                                            <span class="badge bg-primary">
+                                                Asignada
+                                            </span>
+                                        }
+                                        else if (solicitud.Estado == "En reparación")
+                                        {
+                                            <span class="badge bg-info text-dark">
+                                                En reparación
+                                            </span>
+                                        }
+                                        else if (solicitud.Estado == "Finalizada")
+                                        {
+                                            <span class="badge bg-success">
+                                                Finalizada
+                                            </span>
+                                        }
+                                        else if (solicitud.Estado == "Cancelada")
+                                        {
+                                            <span class="badge bg-danger">
+                                                Cancelada
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @solicitud.Estado
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+
+                                        <a asp-controller="Tecnico"
+                                           asp-action="Detalle"
+                                           asp-route-id="@solicitud.Id"
+                                           class="btn btn-sm btn-primary">
+
+                                            Ver servicio
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

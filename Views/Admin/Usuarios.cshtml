@@ -1,0 +1,82 @@
+﻿@model List<SistemaReparaciones.Models.UsuarioViewModel>
+
+@{
+    ViewData["Title"] = "Usuarios";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Usuarios</h1>
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Volver
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <table class="table table-striped">
+
+                <thead>
+                    <tr>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+                            <td>@usuario.Nombres</td>
+                            <td>@usuario.Apellidos</td>
+                            <td>@usuario.Email</td>
+
+                            <td>
+                                <span class="badge bg-primary">
+                                    @usuario.Rol
+                                </span>
+                            </td>
+
+                            <td>
+                                <a asp-controller="Admin"
+                                   asp-action="CambiarRol"
+                                   asp-route-id="@usuario.Id"
+                                   class="btn btn-sm btn-warning">
+                                    Cambiar rol
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>

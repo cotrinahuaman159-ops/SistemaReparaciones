@@ -1,0 +1,111 @@
+﻿@model SistemaReparaciones.Models.TecnicoViewModel
+
+@{
+    ViewData["Title"] = "Editar técnico";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container">
+
+    <h1 class="mb-4">Editar técnico</h1>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Nombres
+                </label>
+
+                <input class="form-control"
+                       value="@Model.Nombres"
+                       readonly />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Apellidos
+                </label>
+
+                <input class="form-control"
+                       value="@Model.Apellidos"
+                       readonly />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Correo electrónico
+                </label>
+
+                <input class="form-control"
+                       value="@Model.Email"
+                       readonly />
+            </div>
+
+            <form asp-action="EditarTecnico" method="post">
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="mb-3">
+
+                    <label asp-for="EspecialidadId"
+                           class="form-label">
+                        Especialidad
+                    </label>
+
+                    <select asp-for="EspecialidadId"
+                            class="form-select">
+
+                        <option value="">
+                            Seleccione una especialidad
+                        </option>
+
+                        @foreach (var especialidad in
+                            ViewBag.Especialidades
+                            as List<SistemaReparaciones.Models.Electrodomestico>
+                            ?? new List<SistemaReparaciones.Models.Electrodomestico>())
+                        {
+                            <option value="@especialidad.Id">
+                                @especialidad.Nombre
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="form-check mb-4">
+
+                    <input asp-for="Disponible"
+                           class="form-check-input" />
+
+                    <label asp-for="Disponible"
+                           class="form-check-label">
+                        Técnico disponible para recibir servicios
+                    </label>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Guardar cambios
+                </button>
+
+                <a asp-action="Tecnicos"
+                   class="btn btn-secondary">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,121 @@
+﻿@model List<SistemaReparaciones.Models.SolicitudServicio>
+
+ 
+@{
+    ViewData["Title"] = "Mis solicitudes";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h1>Mis solicitudes</h1>
+
+        <a asp-action="Crear"
+           class="btn btn-primary">
+            Nueva solicitud
+        </a>
+
+    </div>
+
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No tienes solicitudes registradas.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <table class="table table-striped">
+
+                    <thead>
+                        <tr>
+                            <th>Electrodoméstico</th>
+                            <th>Falla</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var solicitud in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @(solicitud.Electrodomestico?.Nombre ?? "Sin especificar")
+                                </td>
+
+                                <td>
+                                    @solicitud.DescripcionFalla
+                                </td>
+
+                                <td>
+                                    @solicitud.FechaSolicitada.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+
+                                    @if (solicitud.Estado == "Pendiente")
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Pendiente
+                                        </span>
+                                    }
+                                    else if (solicitud.Estado == "Asignada")
+                                    {
+                                        <span class="badge bg-primary">
+                                            Asignada
+                                        </span>
+                                    }
+                                    else if (solicitud.Estado == "En reparación")
+                                    {
+                                        <span class="badge bg-info">
+                                            En reparación
+                                        </span>
+                                    }
+                                    else if (solicitud.Estado == "Finalizada")
+                                    {
+                                        <span class="badge bg-success">
+                                            Finalizada
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td>
+                                    <a asp-action="Detalle"
+                                       asp-route-id="@solicitud.Id"
+                                       class="btn btn-sm btn-primary">
+                                        Ver detalle
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+</div>

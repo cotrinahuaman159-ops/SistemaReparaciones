@@ -1,0 +1,440 @@
+﻿@model SistemaReparaciones.Models.SolicitudAdminViewModel
+
+@{
+    ViewData["Title"] = "Detalle del servicio";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Detalle del servicio</h1>
+
+            <p class="text-muted">
+                Solicitud #@Model.Id
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Volver a mis servicios
+        </a>
+
+    </div>
+
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+
+    <div class="row">
+
+        <!-- Información del cliente -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5 class="mb-0">
+                        Información del cliente
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Nombre:</strong><br />
+                        @Model.NombreCliente
+                    </p>
+
+                    <p>
+                        <strong>Teléfono:</strong><br />
+                        @Model.Telefono
+                    </p>
+
+                    <p>
+                        <strong>Dirección:</strong><br />
+                        @Model.Direccion
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Información del equipo -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5 class="mb-0">
+                        Información del servicio
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Electrodoméstico:</strong><br />
+                        @Model.Electrodomestico
+                    </p>
+
+                    <p>
+                        <strong>Descripción de la falla:</strong><br />
+                        @Model.DescripcionFalla
+                    </p>
+
+                    <p>
+                        <strong>Fecha solicitada:</strong><br />
+                        @Model.FechaSolicitada.ToString("dd/MM/yyyy")
+                    </p>
+
+                    <p>
+                        <strong>Fecha de registro:</strong><br />
+                        @Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Estado -->
+        <div class="col-md-12 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-warning">
+
+                    <h5 class="mb-0">
+                        Estado del servicio
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-md-8">
+
+                            @if (Model.Estado == "Asignada")
+                            {
+                                <span class="badge bg-primary fs-6">
+                                    Asignada
+                                </span>
+
+                                <p class="mt-2 mb-0 text-muted">
+                                    El servicio está pendiente de atención.
+                                </p>
+                            }
+                            else if (Model.Estado == "En reparación")
+                            {
+                                <span class="badge bg-info text-dark fs-6">
+                                    En reparación
+                                </span>
+
+                                <p class="mt-2 mb-0 text-muted">
+                                    El servicio se encuentra actualmente
+                                    en proceso de atención.
+                                </p>
+                            }
+                            else if (Model.Estado == "Finalizada")
+                            {
+                                <span class="badge bg-success fs-6">
+                                    Finalizada
+                                </span>
+
+                                <p class="mt-2 mb-0 text-muted">
+                                    El servicio ha sido finalizado.
+                                </p>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary fs-6">
+                                    @Model.Estado
+                                </span>
+                            }
+
+                        </div>
+
+
+                        <div class="col-md-4 text-md-end">
+
+                            @if (Model.Estado == "Asignada")
+                            {
+                                <form asp-action="IniciarAtencion"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@Model.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-success">
+
+                                        Iniciar atención
+
+                                    </button>
+
+                                </form>
+                            }
+                            else if (Model.Estado == "En reparación")
+                            {
+                                <div>
+
+                                    <span class="text-success d-block mb-2">
+                                        Atención iniciada
+                                    </span>
+
+                                    @if (Model.DiagnosticoId == null)
+                                    {
+                                        <a asp-action="RegistrarDiagnostico"
+                                           asp-route-id="@Model.Id"
+                                           class="btn btn-warning">
+
+                                            Registrar diagnóstico
+
+                                        </a>
+                                    }
+                                    else if (Model.ReparacionId == null)
+                                    {
+                                        <a asp-action="RegistrarReparacion"
+                                           asp-route-id="@Model.Id"
+                                           class="btn btn-warning">
+
+                                            Registrar reparación
+
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="FinalizarServicio"
+                                              method="post"
+                                              class="d-inline">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@Model.Id" />
+
+                                            <button type="submit"
+                                                    class="btn btn-success">
+
+                                                Finalizar servicio
+
+                                            </button>
+
+                                        </form>
+                                    }
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Diagnóstico técnico -->
+        <div class="col-md-12 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-warning">
+
+                    <h5 class="mb-0">
+                        Diagnóstico técnico
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    @if (Model.DiagnosticoId == null)
+                    {
+                        <div class="text-muted">
+
+                            <p class="mb-0">
+                                Aún no se ha registrado un diagnóstico.
+                            </p>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+
+                            <strong>Diagnóstico:</strong>
+
+                            <p class="mt-2">
+                                @Model.DiagnosticoDescripcion
+                            </p>
+
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.DiagnosticoObservaciones))
+                        {
+                            <div class="mb-3">
+
+                                <strong>Observaciones:</strong>
+
+                                <p class="mt-2">
+                                    @Model.DiagnosticoObservaciones
+                                </p>
+
+                            </div>
+                        }
+
+                        <hr />
+
+                        <small class="text-muted">
+
+                            Registrado el
+                            @Model.DiagnosticoFecha?.ToString("dd/MM/yyyy HH:mm")
+
+                        </small>
+
+                        <div class="mt-3">
+
+                            <span class="badge bg-success">
+                                Diagnóstico registrado
+                            </span>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- Reparación realizada -->
+        <div class="col-md-12 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-success text-white">
+
+                    <h5 class="mb-0">
+                        Reparación realizada
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    @if (Model.ReparacionId == null)
+                    {
+                        <div class="text-muted">
+
+                            <p class="mb-0">
+                                Aún no se ha registrado una reparación.
+                            </p>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+
+                            <strong>Trabajo realizado:</strong>
+
+                            <p class="mt-2">
+                                @Model.ReparacionTrabajoRealizado
+                            </p>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <strong>Costo del servicio:</strong>
+
+                            <p class="mt-2">
+                                S/ @Model.ReparacionCostoServicio?.ToString("N2")
+                            </p>
+
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.ReparacionRepuestosUtilizados))
+                        {
+                            <div class="mb-3">
+
+                                <strong>Repuestos utilizados:</strong>
+
+                                <p class="mt-2">
+                                    @Model.ReparacionRepuestosUtilizados
+                                </p>
+
+                            </div>
+                        }
+
+
+                        @if (!string.IsNullOrEmpty(Model.ReparacionObservaciones))
+                        {
+                            <div class="mb-3">
+
+                                <strong>Observaciones:</strong>
+
+                                <p class="mt-2">
+                                    @Model.ReparacionObservaciones
+                                </p>
+
+                            </div>
+                        }
+
+
+                        <hr />
+
+                        <small class="text-muted">
+
+                            Reparación registrada el
+                            @Model.ReparacionFecha?.ToString("dd/MM/yyyy HH:mm")
+
+                        </small>
+
+                        <div class="mt-3">
+
+                            <span class="badge bg-success">
+                                Reparación registrada
+                            </span>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+    </div>
+
+</div>

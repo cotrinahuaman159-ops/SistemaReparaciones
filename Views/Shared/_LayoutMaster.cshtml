@@ -1,0 +1,240 @@
+﻿@* Views/Shared/_LayoutMaster.cshtml *@
+
+<title>@ViewData["Title"] - Sistema de Reparaciones</title>
+
+<link rel="stylesheet"
+      href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+<link rel="stylesheet"
+      href="~/css/Estilos.css"
+      asp-append-version="true" />
+
+
+<!-- Menú principal -->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+        <div class="container">
+
+            <!-- Logo / nombre del sistema -->
+            <a class="navbar-brand"
+               asp-controller="Home"
+               asp-action="Index">
+                Sistema de Reparaciones
+            </a>
+
+
+            <!-- Botón responsive -->
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#menuPrincipal">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <div class="collapse navbar-collapse"
+                 id="menuPrincipal">
+
+                <!-- Menú principal -->
+                <ul class="navbar-nav me-auto">
+
+                    <!-- Inicio -->
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           asp-controller="Home"
+                           asp-action="Index">
+                            Inicio
+                        </a>
+
+                    </li>
+
+
+                    @if (User.Identity != null &&
+                         User.Identity.IsAuthenticated)
+                    {
+
+                        <!-- Menú Cliente -->
+            @if (User.IsInRole("Cliente") || User.IsInRole("Administrador"))
+{
+    <li class="nav-item">
+
+        <a class="nav-link"
+           asp-controller="Solicitud"
+           asp-action="Crear">
+            Solicitar servicio
+        </a>
+
+    </li>
+
+    <li class="nav-item">
+
+        <a class="nav-link"
+           asp-controller="Solicitud"
+           asp-action="MisSolicitudes">
+            Mis solicitudes
+        </a>
+
+    </li>
+}
+
+
+                        <!-- Menú Técnico -->
+                        @if (User.IsInRole("Tecnico"))
+{
+    <li class="nav-item">
+
+        <a class="nav-link"
+           asp-controller="Tecnico"
+           asp-action="Index">
+
+            Mis servicios
+
+        </a>
+
+    </li>
+}
+
+
+                        <!-- Menú Administrador -->
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Admin"
+                                   asp-action="Index">
+                                    Administración
+                                </a>
+
+                            </li>
+                        }
+
+                    }
+
+                </ul>
+
+
+                <!-- Usuario -->
+                <ul class="navbar-nav">
+
+                    @if (User.Identity != null &&
+                         User.Identity.IsAuthenticated)
+                    {
+
+                        <!-- Nombre -->
+                        <li class="nav-item">
+
+                            <span class="nav-link">
+                                Hola, @User.Identity.Name 
+                            </span>
+
+                        </li>
+
+
+                        <!-- Mi cuenta -->
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area="Identity"
+                               asp-page="/Account/Manage/Index">
+                                Mi cuenta
+                            </a>
+
+                        </li>
+
+
+                        <!-- Cerrar sesión -->
+                        <li class="nav-item">
+
+                            <form asp-area="Identity"
+                                  asp-page="/Account/Logout"
+                                  method="post">
+
+                                <button type="submit"
+                                        class="btn btn-link nav-link">
+                                    Cerrar sesión
+                                </button>
+
+                            </form>
+
+                        </li>
+
+                    }
+                    else
+                    {
+
+                        <!-- Iniciar sesión -->
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area="Identity"
+                               asp-page="/Account/Login">
+                                Iniciar sesión
+                            </a>
+
+                        </li>
+
+
+                        <!-- Registrarse -->
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area="Identity"
+                               asp-page="/Account/Register">
+                                Registrarse
+                            </a>
+
+                        </li>
+
+                    }
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+</header>
+
+
+<!-- Contenido de cada página -->
+<main class="container mt-4">
+
+    @RenderBody()
+
+</main>
+
+
+<!-- Pie de página -->
+<footer class="border-top footer text-muted mt-5">
+
+    <div class="container py-3">
+
+        &copy; @DateTime.Now.Year - Sistema de Reparaciones
+
+    </div>
+     <div class="footer-rs">
+
+            <img src="~/img/facebook.jpg" class="rs" />
+            <img src="~/img/x.jpg" class="rs" />
+            <img src="~/img/youtube.jpg" class="rs" />
+            <img src="~/img/whatsapp.jpg" class="rs" />
+            <img src="~/img/twiter.jpg" class="rs" />
+        </div>
+</footer>
+
+
+<!-- Scripts -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="~/js/site.js"
+        asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)

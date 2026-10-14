@@ -1,0 +1,101 @@
+﻿
+header, nav, footer {
+    width: 100%;
+    height: auto;
+    float: left;
+}
+
+body {
+    background-color: #c0f7f4 ;
+}
+
+.logo {
+    width: 100%;
+    height: 300px;
+    border-radius: 20px
+}
+
+.footer-rs {
+    text-align: center;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+}
+
+.menu-item {
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: block;
+    font-size: 18px;
+}
+
+    .menu-item:hover {
+        background-color: white;
+    }
+
+.rs {
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    margin-top: 3px;
+}
+
+.descripcion {
+    width: 80%;
+    margin: 20px auto;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.wrapper-item {
+    text-align: center;
+    
+    padding-top: 10px;
+    border-radius: 20px;
+}
+
+    .wrapper-item img {
+        width: 80%;
+        height: 150px;
+        padding-left: 10%;
+    }
+
+.formulario {
+    width: 450px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #cceeff; /* Celeste */
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+/* Color del texto del menú */
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff !important;
+    font-weight: 600; /* Mayor grosor */
+    opacity: 0.9;
+}
+
+    /* EFECTO HOVER: cambia cuando pasas el cursor */
+    .navbar-dark .navbar-nav .nav-link:hover,
+    .navbar-dark .navbar-nav .nav-link:focus {
+        color: #ffffff !important;
+        opacity: 1;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.6); /* Ligero resplandor */
+    }
+
+    /* Para el texto "Hola, correo..." */
+    .navbar-dark .navbar-nav .nav-link span,
+    span.nav-link {
+        color: #ffffff !important;
+        font-weight: 600;
+    }
